@@ -50,17 +50,17 @@ phases:
       - ls -lah ./infrastructure
       # Concatenate jobs and services into one var for addons
       # If addons exists, upload addons templates to each S3 bucket and write template URL to template config files.
-      - WORKLOADS=$(echo $jobs $svcs)
-      - |
-        for workload in $WORKLOADS; do
-          ADDONSFILE=./infrastructure/$workload.addons.stack.yml
-          if [ -f "$ADDONSFILE" ]; then
-            tmp=$(mktemp)
-            timestamp=$(date +%s)
-            aws s3 cp "$ADDONSFILE" "s3://stackset-boohoo-infrastr-pipelinebuiltartifactbuc-1yqvy6efp6tq/manual/$timestamp/$workload.addons.stack.yml";
-            jq --arg a "https://stackset-boohoo-infrastr-pipelinebuiltartifactbuc-1yqvy6efp6tq.s3.eu-west-1.amazonaws.com/manual/$timestamp/$workload.addons.stack.yml" '.Parameters.AddonsTemplateURL = $a' ./infrastructure/$workload-test.params.json > "$tmp" && mv "$tmp" ./infrastructure/$workload-test.params.json
-          fi
-        done;
+      # - WORKLOADS=$(echo $jobs $svcs)
+      # - |
+      #   for workload in $WORKLOADS; do
+      #     ADDONSFILE=./infrastructure/$workload.addons.stack.yml
+      #     if [ -f "$ADDONSFILE" ]; then
+      #       tmp=$(mktemp)
+      #       timestamp=$(date +%s)
+      #       aws s3 cp "$ADDONSFILE" "s3://stackset-boohoo-infrastr-pipelinebuiltartifactbuc-1yqvy6efp6tq/manual/$timestamp/$workload.addons.stack.yml";
+      #       jq --arg a "https://stackset-boohoo-infrastr-pipelinebuiltartifactbuc-1yqvy6efp6tq.s3.eu-west-1.amazonaws.com/manual/$timestamp/$workload.addons.stack.yml" '.Parameters.AddonsTemplateURL = $a' ./infrastructure/$workload-test.params.json > "$tmp" && mv "$tmp" ./infrastructure/$workload-test.params.json
+      #     fi
+      #   done;
       # Build images
       # - For each manifest file:
       #   - Read the path to the Dockerfile by translating the YAML file into JSON.
