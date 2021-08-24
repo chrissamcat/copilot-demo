@@ -25,6 +25,13 @@ storage:
       path: /var/efs
       read_only: false
 
+logging:
+  destination:
+    Name: cloudwatch
+    region: eu-west-1
+    log_group_name: copilot/boohoo-scheduled
+    log_stream_prefix: copilot/
+
 # Optional fields for more advanced use-cases.
 #
 #variables:                    # Pass environment variables as key value pairs.
